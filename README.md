@@ -11,7 +11,7 @@
 ### Testing Bot
 [Yumeko](https://t.me/Yumeko_ProXBot) *That is running on telegram by the last code of that Readme check it out*
 
-[Toji](https://t.me/Toji_ProXBot) *That is Another repo where this package used check it also*
+[Toji](https://t.me/Toji_ProXBot) *That is running on telegram with Another repo where this package used check it also*
 
 ## Installation
 
