@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="hydragram",
-    version="1.1",
+    version="1.2",
     author="Endtrz",
     author_email="endtrz@gmail.com",
     description="An enhanced Pyrogram-like filter and handler system using Kurigram.",
