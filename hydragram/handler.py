@@ -8,7 +8,7 @@ from pyrogram.types import Message, CallbackQuery
 def handler(
     commands: Optional[Union[str, List[str]]] = None,
     *,
-    group: int = 0,
+    group: int = 9999999,
     dev_cmd: bool = False,
     owner_cmd: bool = False,
     gc_owner: bool = False,
@@ -63,3 +63,4 @@ def handler(
 
         return wrapper
     return decorator
+        
