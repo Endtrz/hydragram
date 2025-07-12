@@ -1,13 +1,17 @@
 ### hydragram
 
-Hydragram is an enhanced filter and handler system inspired by Pyrogram, built on top of Kurigram.
+**Hydragram is an enhanced filter and handler system inspired by Pyrogram, built on top of pyrogram.**
 
-It helps you avoid common Pyrogram errors—especially those related to using `group={}` in command handlers—by providing a simple and stable way to register commands and filters.
+**It helps you avoid common Pyrogram errors—especially those related to using `group={}` in command handlers—by providing a simple and stable way to register commands and filters.**
 
-With Hydragram, you no longer need to manually manage the `group` parameter or worry about filter conflicts. It handles all that smoothly for you, so your commands work reliably every time.
+**With Hydragram, you no longer need to manually manage the `group` parameter or worry about filter conflicts. It handles all that smoothly for you, so your commands work reliably every time.**
 
-Simplify your Telegram bot development and enjoy clean, easy-to-use decorators and filters designed for real-world use.
+**Simplify your Telegram bot development and enjoy clean, easy-to-use decorators and filters designed for real-world use.**
 
+### Testing Bot
+[Yumeko](https://t.me/Yumeko_ProXBot) *That is running on telegram by the last code of that Readme check it out*
+
+[Toji](https://t.me/Toji_ProXBot) *That is Another repo where this package used check it also*
 
 ## Installation
 
@@ -21,7 +25,6 @@ pip install hydragram==2.0
 from hydragram.client import Client
 from hydragram.handler import handler
 from hydragram.filters import command, group
-from Germany import filters 
 
 client = Client("mybot", api_id=12345, api_hash="xyz", bot_token="TOKEN")
 
@@ -102,8 +105,7 @@ if __name__ == "__main__":
 ```
 ### 🤝 Contributing
 
-Contributions are welcome! If you have suggestions, improvements, or bug fixes,
-feel free to fork the repository and submit a pull request.
-
+*Contributions are welcome! If you have suggestions, improvements, or bug fixes,
+feel free to fork the repository and submit a pull request.*
 
 ### Created By [hasnainkk-07](https://github.com/hasnainkk-07)
