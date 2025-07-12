@@ -1,6 +1,6 @@
 from functools import wraps
-from hasnainkk.client import app
 from hasnainkk.filters import command
+from hasnainkk.client import Client
 
 def handler(
     commands,
@@ -28,6 +28,7 @@ def handler(
         else:
             final_filter = base_filter
 
-        app.on_message(final_filter, group=group)(func)
+        client = Client.get_client()  # Get Pyrogram client instance dynamically
+        client.on_message(final_filter, group=group)(func)
         return func
     return decorator
