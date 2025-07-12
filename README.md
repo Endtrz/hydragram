@@ -16,7 +16,7 @@
 ## Installation
 
 ```bash
-pip install hydragram==2.0
+pip install hydragram
 
 ```
 ### How to use it
