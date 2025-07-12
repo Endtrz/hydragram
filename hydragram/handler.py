@@ -1,21 +1,25 @@
 from functools import wraps
-from hydragram.filters import command
-from hydragram.client import Client
+from pyrogram.handlers import MessageHandler
+from typing import Union, List
+from .filters import command
 
 def handler(
-    commands,
+    commands: Union[str, List[str]],
     *,
-    group=99996666,
-    dev_cmd=False,
-    owner_cmd=False,
-    gc_owner=False,
-    gc_admin=False,
-    case_sensitive=False,
+    group: int = 0,
+    dev_cmd: bool = False,
+    owner_cmd: bool = False,
+    gc_owner: bool = False,
+    gc_admin: bool = False,
+    case_sensitive: bool = False,
     extra=None
 ):
     def decorator(func):
+        # Convert single string to list if needed
+        cmd_list = [commands] if isinstance(commands, str) else commands
+        
         base_filter = command(
-            commands,
+            cmd_list,
             dev_cmd=dev_cmd,
             owner_cmd=owner_cmd,
             gc_owner=gc_owner,
@@ -28,7 +32,8 @@ def handler(
         else:
             final_filter = base_filter
 
-        client = Client.get_client()  # Get Pyrogram client instance dynamically
-        client.on_message(final_filter, group=group)(func)
+        from .client import Client as HydraClient
+        pyro_client = HydraClient.get_client()
+        pyro_client.add_handler(MessageHandler(func, final_filter), group)
         return func
     return decorator
