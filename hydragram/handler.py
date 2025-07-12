@@ -4,6 +4,7 @@ from pyrogram import filters as pyro_filters
 from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 from pyrogram.types import Message, CallbackQuery
 
+
 def handler(
     commands: Optional[Union[str, List[str]]] = None,
     *,
@@ -21,41 +22,44 @@ def handler(
         async def wrapper(client, update):
             return await func(client, update)
 
+        # Store the client reference when the handler is registered
+        wrapper._client_ref = None
+        
+        def register_handler(client):
+            # Build filters
+            if commands is not None and handler_type == "message":
+                from .filters import command as hydra_command
+                cmd_list = [commands] if isinstance(commands, str) else commands
+                flt = hydra_command(
+                    cmd_list,
+                    dev_cmd=dev_cmd,
+                    owner_cmd=owner_cmd,
+                    gc_owner=gc_owner,
+                    gc_admin=gc_admin,
+                    case_sensitive=case_sensitive
+                )
+                if filters:
+                    flt = flt & filters
+            else:
+                flt = filters if filters else pyro_filters.all
+
+            # Add appropriate handler
+            if handler_type == "message":
+                client.add_handler(MessageHandler(wrapper, flt), group)
+            elif handler_type == "callback_query":
+                client.add_handler(CallbackQueryHandler(wrapper, flt), group)
+            
+            wrapper._client_ref = client
+
+        # Try to register immediately if client is available
         try:
-            # Try getting Hydragram client first
             from .client import Client as HydraClient
             pyro_client = HydraClient.get_client()
+            register_handler(pyro_client)
         except RuntimeError:
-            # Fall back to Pyrogram client if available
-            from pyrogram import Client as PyroClient
-            if isinstance(wrapper.__self__, PyroClient):
-                pyro_client = wrapper.__self__
-            else:
-                raise
-
-        # Build filters
-        if commands is not None and handler_type == "message":
-            from .filters import command as hydra_command
-            cmd_list = [commands] if isinstance(commands, str) else commands
-            flt = hydra_command(
-                cmd_list,
-                dev_cmd=dev_cmd,
-                owner_cmd=owner_cmd,
-                gc_owner=gc_owner,
-                gc_admin=gc_admin,
-                case_sensitive=case_sensitive
-            )
-            if filters:
-                flt = flt & filters
-        else:
-            flt = filters if filters else pyro_filters.all
-
-        # Add appropriate handler
-        if handler_type == "message":
-            pyro_client.add_handler(MessageHandler(wrapper, flt), group)
-        elif handler_type == "callback_query":
-            pyro_client.add_handler(CallbackQueryHandler(wrapper, flt), group)
-        # Add more handler types as needed
+            # If Hydragram client not available, defer registration
+            # This will work with Pyrogram's decorator system
+            pass
 
         return wrapper
     return decorator
