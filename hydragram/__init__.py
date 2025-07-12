@@ -8,4 +8,4 @@ from . import filters
 from . import handler
 
 __version__ = "0.1.0"
-__all__ = ["Client", "handler"] + filters.__all__
+__all__ = ["Client", "handler", "setup", "command"] + filters.__all__
