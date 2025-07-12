@@ -1,6 +1,6 @@
 from functools import wraps
-from hasnainkk.filters import command
-from hasnainkk.client import Client
+from hydragram.filters import command
+from hydragram.client import Client
 
 def handler(
     commands,
