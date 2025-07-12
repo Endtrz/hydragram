@@ -1,14 +1,19 @@
 from pyrogram import Client as PyroClient
-from typing import Optional
+from typing import Optional, Any
+from functools import partial
 
 class Client:
     _instance: Optional['Client'] = None
-    app: Optional[PyroClient] = None  # Global Pyrogram Client instance
+    app: Optional[PyroClient] = None
 
     def __init__(self, name: str, **kwargs):
         self._client = PyroClient(name, **kwargs)
         Client._instance = self
-        Client.app = self._client  # Set global app to this instance
+        Client.app = self._client
+
+    def __getattr__(self, name: str) -> Any:
+        """Forward all unknown attributes to the underlying Pyrogram client"""
+        return getattr(self._client, name)
 
     @classmethod
     def get_client(cls) -> PyroClient:
@@ -19,18 +24,5 @@ class Client:
     def run(self) -> None:
         self._client.run()
 
-    def add_handler(self, *args, **kwargs) -> None:
-        """Forward add_handler to the underlying Pyrogram client"""
-        self._client.add_handler(*args, **kwargs)
-
-    def on_message(self, filters=None, group: int = 0):
-        """Decorator to register message handlers"""
-        from pyrogram.handlers import MessageHandler
-        
-        def decorator(func):
-            self._client.add_handler(MessageHandler(func, filters), group)
-            return func
-        return decorator
-
-# Explicitly expose the app variable
+# Expose the app variable
 app: Optional[PyroClient] = Client.app
