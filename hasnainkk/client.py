@@ -17,3 +17,6 @@ class Client:
 
     def run(self):
         self._client.run()
+
+# Explicitly expose the app variable
+app = Client.app
