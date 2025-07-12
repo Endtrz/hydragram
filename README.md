@@ -100,5 +100,10 @@ if __name__ == "__main__":
     app.run()
 
 ```
+### 🤝 Contributing
+
+Contributions are welcome! If you have suggestions, improvements, or bug fixes,
+feel free to fork the repository and submit a pull request.
+
 
 ### Created By [hasnainkk-07](https://github.com/hasnainkk-07)
