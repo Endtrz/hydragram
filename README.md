@@ -41,7 +41,7 @@ client.run()
 ### Example How to use them 
 ```python
 from hydragram import Client
-from hydragram import setup 
+from hydragram.filters import setup 
 from hydragram.handler import handler
 from hydragram.filters import group, private
 from pyrogram.types import Message
