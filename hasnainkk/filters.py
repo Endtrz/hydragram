@@ -1,21 +1,45 @@
 from re import compile as compile_re
 from re import escape
 from shlex import split
-from typing import List, Union
+from typing import List, Union, Optional, Set
 
-from pyrogram.enums import ChatType
+from pyrogram.enums import ChatType, ChatMemberStatus
 from pyrogram.errors import RPCError, UserNotParticipant
 from pyrogram.filters import create
 from pyrogram.types import Message
 
 
-OWNER_ID = 6346273488
-DEV_USERS = [6346273488, 5907205317, 5881613383, 1284920298, 1805959544, 8171988347]
-
-DEV_LEVEL = set(DEV_USERS + [int(OWNER_ID)])
-
-PREFIX_HANDLER = ["/", "!", "."]
-BOT_USERNAME = "Raiden_Robot"
+class Config:
+    # Default values
+    _OWNER_ID: int = 6346273488
+    _DEV_USERS: List[int] = [6346273488, 5907205317, 5881613383, 1284920298, 1805959544, 8171988347]
+    _PREFIX_HANDLER: List[str] = ["/", "!", "."]
+    _BOT_USERNAME: str = "Raiden_Robot"
+    
+    # Internal variable
+    _DEV_LEVEL: Set[int] = set(_DEV_USERS + [_OWNER_ID])
+    
+    @classmethod
+    def set_owner_id(cls, owner_id: int):
+        cls._OWNER_ID = owner_id
+        cls._update_dev_level()
+    
+    @classmethod
+    def set_dev_users(cls, dev_users: List[int]):
+        cls._DEV_USERS = dev_users
+        cls._update_dev_level()
+    
+    @classmethod
+    def set_prefix_handler(cls, prefixes: List[str]):
+        cls._PREFIX_HANDLER = prefixes
+    
+    @classmethod
+    def set_bot_username(cls, username: str):
+        cls._BOT_USERNAME = username
+    
+    @classmethod
+    def _update_dev_level(cls):
+        cls._DEV_LEVEL = set(cls._DEV_USERS + [cls._OWNER_ID])
 
 
 def command(
@@ -39,10 +63,10 @@ def command(
         if m.from_user.is_bot or m.forward_from_chat or m.forward_from:
             return False
 
-        if owner_cmd and m.from_user.id != OWNER_ID:
+        if owner_cmd and m.from_user.id != Config._OWNER_ID:
             return False
 
-        if dev_cmd and m.from_user.id not in DEV_LEVEL:
+        if dev_cmd and m.from_user.id not in Config._DEV_LEVEL:
             return False
 
         # Group owner check
@@ -68,8 +92,8 @@ def command(
             return False
 
         regex = r"^[{prefix}](\w+)(@{bot_name})?(?: |$)(.*)".format(
-            prefix="|".join(escape(x) for x in PREFIX_HANDLER),
-            bot_name=BOT_USERNAME,
+            prefix="|".join(escape(x) for x in Config._PREFIX_HANDLER),
+            bot_name=Config._BOT_USERNAME,
         )
         matches = compile_re(regex).search(text)
         if matches:
@@ -99,6 +123,31 @@ def command(
         commands=commands,
         case_sensitive=case_sensitive,
     )
+
+
+def setup(
+    OWNER_ID: Optional[int] = None,
+    DEV_USERS: Optional[List[int]] = None,
+    PREFIX_HANDLER: Optional[List[str]] = None,
+    BOT_USERNAME: Optional[str] = None
+):
+    """Initialize the package with user-specific settings
+    
+    Args:
+        OWNER_ID: Your user ID as owner (optional)
+        DEV_USERS: List of developer user IDs (optional)
+        PREFIX_HANDLER: List of command prefixes (optional)
+        BOT_USERNAME: Your bot's username (optional)
+    """
+    if OWNER_ID is not None:
+        Config.set_owner_id(OWNER_ID)
+    if DEV_USERS is not None:
+        Config.set_dev_users(DEV_USERS)
+    if PREFIX_HANDLER is not None:
+        Config.set_prefix_handler(PREFIX_HANDLER)
+    if BOT_USERNAME is not None:
+        Config.set_bot_username(BOT_USERNAME)
+
 
 
 from pyrogram.filters import (
