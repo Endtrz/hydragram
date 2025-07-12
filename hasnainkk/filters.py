@@ -3,16 +3,20 @@ from re import escape
 from shlex import split
 from typing import List, Union
 
-from pyrogram.enums import ChatType, ChatMemberStatus
+from pyrogram.enums import ChatType
+from pyrogram.errors import RPCError, UserNotParticipant
 from pyrogram.filters import create
 from pyrogram.types import Message
 
-# Replace these IDs with your own or keep as is for you and friends
+
 OWNER_ID = 6346273488
 DEV_USERS = [6346273488, 5907205317, 5881613383, 1284920298, 1805959544, 8171988347]
+
 DEV_LEVEL = set(DEV_USERS + [int(OWNER_ID)])
 
-from hasnainkk.client import app  # Import global client instance
+PREFIX_HANDLER = ["/", "!", "."]
+BOT_USERNAME = "Raiden_Robot"
+
 
 def command(
     commands: Union[str, List[str]],
@@ -64,8 +68,8 @@ def command(
             return False
 
         regex = r"^[{prefix}](\w+)(@{bot_name})?(?: |$)(.*)".format(
-            prefix="|".join(escape(x) for x in app.prefix if hasattr(app, "prefix") else ["/"]),
-            bot_name=app.me.username if hasattr(app, "me") and app.me else "",
+            prefix="|".join(escape(x) for x in PREFIX_HANDLER),
+            bot_name=BOT_USERNAME,
         )
         matches = compile_re(regex).search(text)
         if matches:
@@ -97,7 +101,6 @@ def command(
     )
 
 
-# Import Pyrogram's built-in filters and export for easy access
 from pyrogram.filters import (
     all as all_,
     me,
@@ -155,6 +158,8 @@ from pyrogram.filters import (
     linked_channel,
 )
 
+
+
 __all__ = [
     "command",
     "all_",
@@ -211,4 +216,4 @@ __all__ = [
     "scheduled",
     "from_scheduled",
     "linked_channel",
-      ]
+    ]
