@@ -10,6 +10,7 @@ pip install hasnainkk
 ```
 ### How to use it
 
+```python
 from hasnainkk.client import Client
 from hasnainkk.handler import handler
 from hasnainkk.filters import command, group
