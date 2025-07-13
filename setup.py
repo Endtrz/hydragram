@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="hydragram",  # Your custom package name
-    version="2.0.6",  # Update this for each PyPI release
+    version="2.0.7",  # Update this for each PyPI release
     author="Endtrz",
     author_email="endtrz@gmail.com",
     description="An enhanced Pyrogram-like filter and handler system using Pyrogram.",
