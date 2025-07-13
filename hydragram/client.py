@@ -16,9 +16,12 @@ class Client:
             name: Session name
             kwargs: Additional Pyrogram client arguments
         """
-        # Force our custom storage
-        kwargs['storage'] = HydraStorage
-        self._client = PyroClient(name, **kwargs)
+        # Initialize with our custom storage
+        self._client = PyroClient(
+            name,
+            storage=HydraStorage,  # Correct way to pass storage
+            **{k: v for k, v in kwargs.items() if k != 'storage'}
+        )
         self._resolver = PeerResolver()
         
         # Bind resolver methods
@@ -36,7 +39,7 @@ class Client:
         peer_id: Union[int, str, None],
         *,
         use_cache: bool = True
-    ) -> Union[raw.base.InputPeer, raw.base.InputUser, raw.base.InputChannel]:
+    ) -> raw.base.InputPeer:
         """
         Enhanced peer resolution with:
         - Username/phone number support
