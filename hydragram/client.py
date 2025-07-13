@@ -11,8 +11,10 @@ class Client:
         self._client = PyroClient(name, **kwargs)
         self._resolver = PeerResolver()
         
-        # Proper method binding
-        self._client.resolve_peer = lambda pid, **kw: self._resolver.resolve(self._client, pid, **kw)
+        # Proper method binding with all parameters
+        self._client.resolve_peer = lambda pid, **kw: self._resolver.resolve(
+            self._client, pid, **{**{'use_cache': True, 'retry_as_channel': True}, **kw}
+        )
         
         Client._instance = self
         Client.app = self._client
@@ -24,14 +26,21 @@ class Client:
         self,
         peer_id: Union[int, str, None],
         *,
-        use_cache: bool = True
+        use_cache: bool = True,
+        retry_as_channel: bool = True
     ) -> raw.base.InputPeer:
-        return await self._resolver.resolve(self._client, peer_id, use_cache=use_cache)
+        """Enhanced resolve_peer with retry options"""
+        return await self._resolver.resolve(
+            self._client,
+            peer_id,
+            use_cache=use_cache,
+            retry_as_channel=retry_as_channel
+        )
 
     @classmethod
     def get_client(cls) -> PyroClient:
         if cls._instance is None:
-            raise RuntimeError("Client not initialized")
+            raise RuntimeError("Client not initialized. Use Client() first.")
         return cls._instance._client
 
     def run(self) -> None:
