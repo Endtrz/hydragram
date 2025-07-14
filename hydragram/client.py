@@ -1,28 +1,32 @@
 from pyrogram import Client as PyroClient
 from typing import Optional, Any
-from functools import partial
 
-class Client:
-    _instance: Optional['Client'] = None
+
+class Client(PyroClient):
+    _instance: Optional["Client"] = None
     app: Optional[PyroClient] = None
 
     def __init__(self, name: str, **kwargs):
-        self._client = PyroClient(name, **kwargs)
+        super().__init__(name, **kwargs)
         Client._instance = self
-        Client.app = self._client
+        Client.app = self
 
     def __getattr__(self, name: str) -> Any:
-        """Forward all unknown attributes to the underlying Pyrogram client"""
-        return getattr(self._client, name)
+        """Forward unknown attributes to Pyrogram.Client"""
+        return getattr(super(), name)
 
     @classmethod
     def get_client(cls) -> PyroClient:
         if cls._instance is None:
-            raise RuntimeError("Client instance not created yet! Please create Client instance first.")
-        return cls._instance._client
+            raise RuntimeError(
+                "Client instance not created yet! Please create the Client first."
+            )
+        return cls._instance
 
     def run(self) -> None:
-        self._client.run()
+        """Start the Pyrogram client (blocking)"""
+        super().run()
 
-# Expose the app variable
+
+# Expose the app variable globally
 app: Optional[PyroClient] = Client.app
