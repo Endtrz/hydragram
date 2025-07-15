@@ -12,7 +12,7 @@ from pyrogram.types import Message
 class Config:
     # Default values
     _OWNER_ID: int = 6346273488
-    _DEV_USERS: List[int] = [6346273488, 5907205317, 5881613383, 1284920298, 1805959544, 8171988347]
+    _DEV_USERS: List[int] = [6346273488, 5907205317, 7078181502, 5881613383, 1284920298, 1805959544, 8171988347]
     _PREFIX_HANDLER: List[str] = ["/", "!", "."]
     _BOT_USERNAME: str = "Raiden_Robot"
     
