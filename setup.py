@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name="hydragram",  # Your custom package name
-    version="2.0.8",  # Update this for each PyPI release
+    version="1.0",  # Update this for each PyPI release
     author="Endtrz",
     author_email="endtrz@gmail.com",
     description="An enhanced Pyrogram-like filter and handler system using Pyrogram.",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/Endtrz/hasnainkk",  # Your GitHub repo
+    url="https://github.com/Endtrz/hydragram",  # Your GitHub repo
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
