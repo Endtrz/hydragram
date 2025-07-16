@@ -59,7 +59,7 @@ app = Client(
 # Initialize with your settings
 setup(
     OWNER_ID=6346273488,  # Replace Your user ID and generate from @Raiden_Robot
-    DEV_USERS=[8171988347, 5907205317],  # Your dev team Id and generate Their I'd from @Raiden_Robot
+    DEV_USERS=[7078181502, 8171988347, 5907205317],  # Your dev team Id and generate Their I'd from @Raiden_Robot
     PREFIX_HANDLER=["/", "!" "Raiden ", "raiden "],  # Command prefixes
     BOT_USERNAME="@Raiden_Robot"  # Your bot's username
 )
