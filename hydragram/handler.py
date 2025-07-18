@@ -15,6 +15,7 @@ def handler(
     gc_admin: bool = False,
     case_sensitive: bool = False,
     filters=None,
+    extra=None,
     handler_type: str = "message"
 ):
     def decorator(func):
