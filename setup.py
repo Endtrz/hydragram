@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="hydragram",  # Your custom package name
-    version="0.1.0",  # Update this for each PyPI release
+    version="1.0",  # Update this for each PyPI release
     author="Endtrz",
     author_email="endtrz@gmail.com",
     description="An enhanced Pyrogram-like filter and handler system using Pyrogram.",
@@ -14,6 +14,7 @@ setup(
     install_requires=[
         "pyrogram>=2.0.106",
         "tgcrypto>=1.2.5"  # Optional: but recommended for speed
+        "kurigram"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
