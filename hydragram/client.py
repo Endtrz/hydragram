@@ -1,6 +1,6 @@
 from pyrogram import Client as PyroClient
 from typing import Optional, Any
-
+from .resolve_peer import ResolvePeer
 
 class Client(PyroClient):
     _instance: Optional["Client"] = None
@@ -14,6 +14,10 @@ class Client(PyroClient):
     def __getattr__(self, name: str) -> Any:
         """Forward unknown attributes to Pyrogram.Client"""
         return getattr(super(), name)
+
+    async def resolve_peer(self, id):
+        obj = ResolvePeer(self)
+        return await obj.resolve_peer(id)
 
     @classmethod
     def get_client(cls) -> PyroClient:
